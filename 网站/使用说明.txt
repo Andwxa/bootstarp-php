@@ -1,0 +1,26 @@
+使用SQLyog作为数据库
+	结构表路径./网站/mysql/fun.sql 
+	数据库需要填充fun_category表的栏目信息和fun_user表的管理员
+
+如果‘网站’这个文件夹改名 需要将项目里的路径进行更改
+	比如：
+		//获得绝对路径
+		$RootDir = $_SERVER['DOCUMENT_ROOT'];
+		$getAfter = "$RootDir/网站/deploy/after_end.php";
+	更改
+		//获得绝对路径
+		$RootDir = $_SERVER['DOCUMENT_ROOT'];
+		$getAfter = "$RootDir/更改后的名称/deploy/after_end.php";
+
+发布文章
+	需要数据库里fun_category表里有栏目信息，否则发布失败
+
+文件结构信息
+	bootstrap-3.4.1 --> 样式框架
+	deploy --> 对数据库进行操作
+	img --> 存放图片
+	mysql --> 存放数据库表
+	processing -->对行为进行处理
+	utf8-php --> 富文本框
+	utility -->工具类
+	外层都是视图

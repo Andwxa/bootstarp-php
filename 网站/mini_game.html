@@ -1,0 +1,295 @@
+<!--
+ * @Date: 2022-04-12 08:47:32
+ * @LastEditors: Andwxa
+ * @LastEditTime: 2022-06-03 10:52:40
+ * Github:https://github.com/Andwxa
+ * @Description: 1.可控速度难度2.可控开始结束3.快捷键开始结束4.可以自动主动切换背景5.可以看到30次攻击数6.有三条生命值7.子弹飞机随机出现8.子弹下坠时缓慢变大9.子弹速度会越来越快
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>文化交流</title>
+</head>
+<style type="text/css">
+    @keyframes example {
+        0% {
+            left: 30px;
+            top: 10px;
+        }
+        50% {
+            left: 40px;
+            top: 10px;
+        }
+        100% {
+            left: 30px;
+            top: 10px;
+        }
+    }
+    
+    #backtrack {
+        color: white;
+        text-shadow: 1px 1px 2px black, 0 0 25px blue, 0 0 5px darkblue;
+        position: absolute;
+        left: 30px;
+        top: 10px;
+        text-decoration: none;
+        animation-name: example;
+        animation-duration: 3s;
+        animation-iteration-count: infinite;
+    }
+    
+    #main_frame {
+        width: 800px;
+        height: 920px;
+        border: 3px solid yellow;
+        margin: auto;
+    }
+    
+    h1 {
+        text-align: center;
+    }
+    
+    #fraction {
+        margin-left: 580px;
+        width: 200px;
+    }
+    
+    #game_scope {
+        width: 700px;
+        height: 670px;
+        margin: auto;
+        border: 1px solid black;
+        background: url('./img/mini_game/bj1.jpeg')repeat;
+        background-size: 100% 100%;
+    }
+    
+    #aircaft {
+        top: -3px;
+        left: 330px;
+        position: relative;
+        opacity: 0.5;
+    }
+    
+    #letterbg {
+        width: 30px;
+        font-size: 12px;
+        font-weight: bolder;
+        color: #F00;
+        top: -25px;
+        left: 350px;
+        padding-left: 2px;
+        position: relative;
+    }
+    
+    #letter {
+        text-align: center;
+        padding-top: 15px;
+        display: block;
+        color: #FFFFFF;
+    }
+    
+    #life {
+        margin-right: 10px;
+    }
+    
+    img {
+        width: 50px;
+        height: 50px;
+    }
+    
+    #input,
+    #radio {
+        margin: 10px;
+    }
+    
+    #input,
+    #radio {
+        text-align: center;
+    }
+</style>
+<script src="../js/jquery-3.6.0.js"></script>
+<script>
+    var i = 0;
+    var speed = 0;
+    var click = 0;
+    var bj = 0;
+    // 快捷键
+    $(document).ready(function(e) {
+        $(document).keypress(function(e) {
+            if (e.keyCode == 32) {
+                if (click == 0) {
+                    initial();
+                    click++;
+                }
+            }
+            if (e.keyCode == 13) {
+                window.alert("结束了,您坚持了:" + i + "波");
+                window.location.reload();
+            }
+        });
+        $("#start").click(function(e) {
+            initial();
+        });
+        $("#stop").click(function(e) {
+            window.alert("结束了,您坚持了:" + i + "波");
+            window.location.reload();
+        });
+        $("#bj").click(function(e) {
+            if (bj == 0) {
+                $("#game_scope").css({
+                    background: "url('./img/mini_game/bj1.jpeg')"
+                });
+                bj = bj + 1;
+            } else {
+                $("#game_scope").css({
+                    background: "url('./img/mini_game/bj.gif')"
+                });
+                bj = 0;
+            }
+        });
+    })
+
+    // 开始设置
+    function initial(e) {
+        click++;
+        $("#start").attr('disabled', 'true');
+        var val = $('input:radio[name="radio"]:checked').val()
+        if (val == "easy")
+            speed = 3000;
+        else if (val == "normal")
+            speed = 2000;
+        else
+            speed = 1500;
+        $(".radio").attr('disabled', 'true');
+        bomb();
+    }
+    // 按键输入
+    $(document).keydown(function(e) {
+        if (String.fromCharCode(e.which) == $("#letter").html()) {
+            $("#letterbg").stop();
+            $("#letterbg").css({
+                backgroundImage: "",
+                backgroundSize: ""
+            }); // 复位 
+            $("#letterbg").html("<img src='./img/mini_game/bomb.gif' />");
+            speed = speed + 20;
+            i++;
+            // 自动换图片
+            if (i % 8 == 0) {
+                if (bj == 0) {
+                    $("#game_scope").css({
+                        background: "url('./img/mini_game/bj1.jpeg')"
+                    });
+                    bj = bj + 1;
+                } else {
+                    $("#game_scope").css({
+                        background: "url('./img/mini_game/bj.gif')"
+                    });
+                    bj = 0;
+                }
+            }
+            $("#fraction_num").text(30 - i);
+            if (i == 30) {
+                window.alert("恭喜,您成功的坚守了阵地");
+                window.location.reload();
+            } else
+                window.setTimeout("bomb()", speed);
+        }
+    });
+
+    function bomb() {
+        $("#letterbg").html("<span id='letter'></span>");
+        var occurrence_position = (Math.random() * 600 + 50); // 随机出现位置
+        speed = speed - 50;
+        $("#letterbg").css({
+            top: "-28px",
+            left: (occurrence_position - 18) + "px",
+            width: "30px",
+            height: "30px",
+            backgroundImage: "url(./img/mini_game/bomb.png)",
+            backgroundSize: "cover"
+        }); // 复位 
+        $("#letter").css({
+            marginTop: "-3px"
+        })
+        $("#aircaft").css({
+            top: "-25px",
+            left: occurrence_position - 25 + "px",
+            fontSize: "12px",
+            opacity: "0.5"
+        }); // 复位
+        // 飞机动画
+        $("#aircaft").animate({
+            top: "10px",
+            fontSize: "36px",
+            opacity: '1'
+        }, speed / 8, "swing");
+        $("#aircaft").animate({
+            top: "-10px",
+            fontSize: "12px",
+            opacity: '0'
+        }, speed / 8, "swing");
+        $("#letter").html(String.fromCharCode(Math.floor(Math.random() * 26) + 65)); // 随机大写字母
+        $("#letter").animate({
+            marginTop: "11px"
+        }, speed, "swing")
+        $("#letterbg").animate({
+                top: "575px",
+                width: "60px",
+                height: "60px"
+            }, speed, "swing", // 动画
+            function() {
+                $("#letterbg").css({
+                    backgroundImage: ""
+                })
+                i++;
+                $("#fraction_num").text(30 - i);
+                if (i == 30) {
+                    window.alert("恭喜,您成功的坚守了阵地");
+                    window.location.reload();
+                }
+                $("#letterbg").html("<img src='./img/mini_game/explode.gif' />");
+                setTimeout(function() {
+                    var LifeValue = $("#life").text();
+                    $("#life").text(LifeValue - 1);
+                    window.setTimeout("bomb()", speed);
+                    if ((LifeValue - 1) < 1) {
+                        window.alert("结束了,您坚持了:" + i + "波");
+                        window.location.reload();
+                    }
+
+                }, 1000)
+            }
+        );
+    }
+</script>
+
+<body>
+    <a href="index.php" id="backtrack">返回首页</a>
+    <div id="main_frame">
+        <h1>坚持阵地</h1>
+        <p id="fraction">生命：<img src="./img/mini_game/life.jpg" style="width: 14px; height: 14px;" />X<span id="life">3</span>还有：<span id="fraction_num">30</span>波</p>
+        <div id="game_scope">
+            <img id="aircaft" src="./img/mini_game/aircraft.png" />
+            <div id="letterbg"><span id="letter"></span></div>
+        </div>
+        <form>
+            <div id="input">
+                <input type="button" class="input" name="start" id="start" value="按空格键开始" />
+                <input type="button" class="input" name="stop" id="stop" value="按回车键结束" />
+                <input type="button" class="input" name="bj" id="bj" value="点击切换背景图" />
+            </div>
+            <div id="radio">
+                <input type="radio" class="radio" name="radio" id="easy" checked="checked" value="easy" />简单
+                <input type="radio" class="radio" name="radio" id="normal" value="normal" />普通
+                <input type="radio" class="radio" name="radio" id="difficult" value="difficult " />困难
+            </div>
+        </form>
+    </div>
+</body>
+
+</html>

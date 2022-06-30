@@ -1,0 +1,248 @@
+<!--
+ * @Date: 2022-05-30 22:36:57
+ * @LastEditors: Andwxa
+ * @LastEditTime: 2022-06-02 19:29:07
+ * Github:https://github.com/Andwxa
+ * @Description: 登录注册找回密码
+-->
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>欢迎</title>
+    <link rel="stylesheet" type="text/css" href="./bootstrap-3.4.1/dist/css/bootstrap.min.css">
+    <script src="./bootstrap-3.4.1/dist/jq/jquery-3.6.0.min.js"></script>
+    <script src="./bootstrap-3.4.1/dist/js/bootstrap3_3_7.main.js"></script>
+    <link href="https://fastly.jsdelivr.net/npm/@bootcss/v3.bootcss.com@1.0.36/examples/sticky-footer/sticky-footer.css" rel="stylesheet">
+    <script>
+        // 界面加载完后重置验证码
+        $(document).ready(function() {
+            $('#change1').trigger("click");
+            var click_interface1 = document.getElementById("click_interface1");
+            var click_interface2 = document.getElementById("click_interface2");
+            var click_interface3 = document.getElementById("click_interface3");
+            click_interface1.onclick = function() {
+                $('#change1').trigger("click");
+            }
+            click_interface2.onclick = function() {
+                $('#change2').trigger("click");
+            }
+            click_interface3.onclick = function() {
+                $('#change3').trigger("click");
+            }
+        });
+        // 发送邮箱
+        window.onload = function() {
+                $("#button").click(function() {
+                    alert("邮件已发送，注意查收！")
+                });
+            }
+            //注册检查
+        function checkRegisterForm() {
+            if ($("#username").val() == "") {
+                $("#rs").text('账户不能为空！');
+                return false;
+            } else if ($("#email").val() == "") {
+                $("#rs").text('邮箱不能为空！');
+                return false;
+            } else if ($("#pw1").val() == "") {
+                $("#rs").text('密码不能为空！');
+                return false;
+            } else if ($("#pw2").val() == "") {
+                $("#rs").text('确认密码不能为空！');
+                return false;
+            } else if ($("#captcha2").val() == "") {
+                $("#rs").text('验证码不能为空！');
+                return false;
+            }
+            var pw1 = document.getElementById("pw1").value;
+            var pw2 = document.getElementById("pw2").value;
+            if (pw1 !== pw2) {
+                $("#rs").text('两次输入密码不一致！');
+                return false;
+            }
+            return true;
+        }
+        //登录检查
+        function checkLoginForm() {
+            if ($("#name").val() == "") {
+                $("#rs").text('账户不能为空！');
+                console.log("账户不能为空！");
+                return false;
+            } else if ($("#pwd").val() == "") {
+                $("#rs").text('密码不能为空！');
+                console.log("密码不能为空！");
+                return false;
+            } else if ($("#captcha1").val() == "") {
+                $("#rs").text('验证码不能为空！');
+                return false;
+            }
+            return true;
+        }
+        //找回密码
+        function findPassword() {
+            if ($("#findUsername").val() == "") {
+                $("#rs").text('账户不能为空！');
+                return false;
+            } else if ($("#findEmail").val() == "") {
+                $("#rs").text('邮箱不能为空！');
+                return false;
+            } else if ($("#findEmailkey").val() == "") {
+                $("#rs").text('密匙不能为空！');
+                return false;
+            } else if ($("#newPassword").val() == "") {
+                $("#rs").text('重置密码不能为空！');
+                return false;
+            } else if ($("#captcha3").val() == "") {
+                $("#rs").text('验证码不能为空！');
+                return false;
+            }
+            return true;
+        }
+    </script>
+</head>
+
+<body style="background-color: #FAFAFA;">
+    <!-- 导航栏 -->
+    <nav class="navbar navbar-default container" role="navigation">
+        <!--主题-->
+        <div class="container-fluid">
+            <div class="navbar-header"><a class="navbar-brand" href="index.php">文化交流</a></div>
+            <!--内容-->
+            <div>
+                <!--向右对齐-->
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">问题<b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">无法登录</a></li>
+                            <li><a href="#">注册失败</a></li>
+                            <li><a href="#">找不回密码</a></li>
+                            <li class="divider"></li>
+                            <li><a href="#">线上客服</a></li>
+                            <li class="divider"></li>
+                            <li><a href="#">留言</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <!-- 主体 -->
+    <div class="container" style="width: 400px;margin-top: 80px;">
+        <!--标签条-->
+        <ul class="nav nav-tabs">
+            <li class="active">
+                <a href="#login" data-toggle="tab" id="click_interface1">登录</a>
+            </li>
+            <li>
+                <a href="#register" data-toggle="tab" id="click_interface2">注册</a>
+            </li>
+            <li>
+                <a href="#findPassword" data-toggle="tab" id="click_interface3">找回密码</a>
+            </li>
+        </ul>
+        <!--标签内容-->
+        <div class="tab-content">
+            <!--登录-->
+            <div class="tab-pane fade in active" id="login">
+                <form class="form-signin" style="margin-top: 20px;" method="post" action='./processing/login.php' onsubmit="return checkLoginForm()">
+                    <div class="form-group">
+                        <label>账户：</label><br>
+                        <input class="form-control" type="text" placeholder="账户" id="name" name="name" />
+                    </div>
+                    <div class="form-group">
+                        <label>密码：</label><br>
+                        <input class="form-control" type="password" placeholder="密码" id="pwd" name="pwd" />
+                    </div>
+                    <div class="form-group">
+                        <label>验证码：</label><br>
+                        <input class="form-control" type="text" placeholder="验证码" id="captcha1" name="captcha" />
+                        <img src="./utility/code.php" alt="" id="code_img1" style="margin-top: 8px;" />
+                        <a href="#" id="change1">看不清，换一张</a>
+                    </div>
+                    <div class="form-group">
+                        记住登录状态：<input type="checkbox" name="loginType" id="loginType" value="loginType">
+                    </div>
+                    <input type="submit" value="登录用户" class="btn btn-default" />
+                    <input type="reset" value="重新填写" class="btn btn-default" />
+                </form>
+            </div>
+            <!--注册-->
+            <div class="tab-pane fade" id="register">
+                <form class="form-signin" style="margin-top: 20px;" method="post" action='./processing/register.php' onsubmit="return checkRegisterForm()">
+                    <div class="form-group">
+                        <input class="form-control" type="text" placeholder="用户名2~16位，只允许汉字，英文字母，数字，下划线" id="username" name="username" />
+                    </div>
+                    <div class="form-group">
+                        <input class="form-control" type="text" placeholder="电子邮件格式" id="email" name="email" />
+                    </div>
+                    <div class="form-group">
+                        <input class="form-control" type="password" placeholder="密码长度6~16位，只允许英文字母，数字，下划线" id="pw1" name="pw1" />
+                    </div>
+                    <div class="form-group">
+                        <input class="form-control" type="password" placeholder="确认密码" id="pw2" name="pw2" />
+                    </div>
+                    <div class="form-group">
+                        <input class="form-control" type="text" placeholder="验证码" id="captcha2" name="captcha" />
+                        <img src="./utility/code.php" alt="" id="code_img2" style="margin-top: 5px;" />
+                        <a href="#" id="change2">看不清，换一张</a>
+                    </div>
+                    <input type="submit" value="提交注册" class="btn btn-default" />
+                    <input type="reset" value="重新填写" class="btn btn-default" />
+                </form>
+            </div>
+            <!--找回密码-->
+            <div class="tab-pane fade" id="findPassword">
+                <form class="form-signin" style="margin-top: 20px;" method="post" action='./processing/retrievePassword.php' onsubmit="return findPassword()">
+                    <div class="form-group">
+                        <input class="form-control" type="text" placeholder="用户名" id="findUsername" name="findUsername" />
+                    </div>
+                    <div class="form-group">
+                        <input class="form-control" type="text" placeholder="电子邮件地址" id="findEmail" name="findEmail" />
+                    </div>
+                    <div class="form-group">
+                        <input class="form-control" type="password" placeholder="邮箱收到的密匙" id="findEmailkey" name="findEmailkey" />
+                    </div>
+                    <div class="form-group">
+                        <input class="form-control" type="password" placeholder="新密码" id="newPassword" name="newPassword" />
+                    </div>
+                    <div class="form-group">
+                        <input class="form-control" type="text" placeholder="验证码" id="captcha3" name="captcha" />
+                        <img src="./utility/code.php" alt="" id="code_img3" style="margin-top: 5px;" />
+                        <a href="#" id="change3">看不清，换一张</a>
+                    </div>
+                    <input type="button" value="发送密匙" class="btn btn-default" id="button" />
+                    <input type="submit" value="修改密码" class="btn btn-default" />
+                </form>
+            </div>
+        </div>
+        <!--提示块-->
+        <div class="container" style="width: 180px;">
+            <p id="rs" style="margin: 20px;"></p>
+        </div>
+    </div>
+    <script>
+        var change1 = document.getElementById("change1");
+        var img1 = document.getElementById("code_img1");
+        change1.onclick = function() {
+            img1.src = "./utility/code.php?t=" + Math.random(); //增加一个随机参数，防止图片缓存
+            return false; //阻止超链接的跳转动作
+        }
+        var change2 = document.getElementById("change2");
+        var img2 = document.getElementById("code_img2");
+        change2.onclick = function() {
+            img2.src = "./utility/code.php?t=" + Math.random(); //增加一个随机参数，防止图片缓存
+            return false; //阻止超链接的跳转动作
+        }
+        var change3 = document.getElementById("change3");
+        var img3 = document.getElementById("code_img3");
+        change3.onclick = function() {
+            img3.src = "./utility/code.php?t=" + Math.random(); //增加一个随机参数，防止图片缓存
+            return false; //阻止超链接的跳转动作
+        }
+    </script>
+</body>
+
+</html>
